@@ -13,9 +13,23 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-        // replace this example code with whatever you need
-        return $this->render('default/index.html.twig', array(
-            'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..'),
-        ));
+		$auth_checker = $this->get('security.authorization_checker');
+		
+		if(!$auth_checker->isGranted('ROLE_USER'))
+		{
+			$authenticationUtils = $this->get('security.authentication_utils');
+			$error = $authenticationUtils->getLastAuthenticationError();
+			$lastUsername = $authenticationUtils->getLastUsername();
+			
+			return $this->render('default/notlogged.html.twig', array(
+				'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..'),
+				'error' => $error,
+				'last_username' => $lastUsername
+			));
+		}
+		
+		return $this->render('default/index.html.twig', array(
+				'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..')
+		));
     }
 }

@@ -28,7 +28,7 @@ class Task
 	protected $description;
 
 	/**
-	 * @ORM\Column(type="datatime")
+	 * @ORM\Column(type="datetime")
 	 */
 	protected $endTime;
 	
@@ -136,16 +136,6 @@ class Task
         $this->ended = $ended;
 
         return $this;
-    }
-
-    /**
-     * Is ended
-     *
-     * @return boolean
-     */
-    public function isEnded()
-    {
-        return $this->ended;
     }
 
     /**

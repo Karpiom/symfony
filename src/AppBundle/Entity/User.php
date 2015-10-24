@@ -3,12 +3,16 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="user")
+ * @UniqueEntity(fields="email", message="Email already taken")
  */
-class User
+class User implements UserInterface, \Serializable
 {
     /**
      * @ORM\Column(type="integer")
@@ -16,7 +20,7 @@ class User
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-
+	
     /**
      * @ORM\Column(type="string", length=25)
      */
@@ -29,13 +33,36 @@ class User
 
     /**
      * @ORM\Column(type="string", length=32)
+     * @Assert\NotBlank()
+     * @Assert\Email()
      */
     protected $email;
 
+	/**
+     * @Assert\NotBlank()
+     * @Assert\Length(max = 4096)
+	 */
+	protected $plainPassword; 
+	
     /**
-     * @ORM\Column(type="string", length=128)
+     * @ORM\Column(type="string", length=64)
      */
     protected $password;
+	
+	/**
+     * @ORM\Column(type="boolean", options={"default":false})
+     */
+    private $access;
+	
+	/**
+     * @ORM\Column(name="is_active", type="boolean")
+     */
+    private $isActive;
+	
+	public function __construct()
+    {
+        $this->isActive = true;
+    }
 
     /**
      * Get id
@@ -141,5 +168,114 @@ class User
     public function getPassword()
     {
         return $this->password;
+    }
+
+	/**
+     * Get roles
+     *
+     * @return array
+     */
+	public function getRoles()
+    {
+		if(!$this->access)
+			return array('ROLE_USER');
+		else
+			return array('ROLE_ADMIN', 'ROLE_USER');
+    }
+	
+	public function eraseCredentials()
+    {
+    }
+	
+	/**
+     * Get username
+     *
+     * @return string
+     */
+	public function getUsername()
+    {
+        return $this->email;
+    }
+
+	/**
+     * Get salt
+     *
+     * @return string
+     */
+    public function getSalt()
+    {
+        return null;
+    }
+	
+	/** @see \Serializable::serialize() */
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->email,
+            $this->password,
+            // see section on salt below
+            // $this->salt,
+        ));
+    }
+
+    /** @see \Serializable::unserialize() */
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->email,
+            $this->password,
+            // see section on salt below
+            // $this->salt
+        ) = unserialize($serialized);
+    }
+
+    /**
+     * Set isActive
+     *
+     * @param boolean $isActive
+     *
+     * @return User
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * Get isActive
+     *
+     * @return boolean
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * Set access
+     *
+     * @param boolean $access
+     *
+     * @return User
+     */
+    public function setAccess($access)
+    {
+        $this->access = $access;
+
+        return $this;
+    }
+
+    /**
+     * Get access
+     *
+     * @return boolean
+     */
+    public function getAccess()
+    {
+        return $this->access;
     }
 }

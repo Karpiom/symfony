@@ -1,13 +1,92 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
+<!--
+	Photon by HTML5 UP
+	html5up.net | @n33co
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
 <html>
     <head>
-        <meta charset="UTF-8" />
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        <meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		{% javascripts '@AppBundle/Resources/public/assets/js/ie/html5shiv.js' %}
+		<!--[if lte IE 8]><script src="{{ asset_url }}"></script><![endif]-->
+		{% endjavascripts %}
+		{% stylesheets '@AppBundle/Resources/public/assets/css/main.css' filter='cssrewrite' %}
+		<link rel="stylesheet" href="{{ asset_url }}" />
+		{% endstylesheets %}
+		{% stylesheets '@AppBundle/Resources/public/assets/css/ie8.css' filter='cssrewrite' %}
+		<!--[if lte IE 8]><link rel="stylesheet" href="{{ asset_url }}" /><![endif]-->
+		{% endstylesheets %}
+		{% stylesheets '@AppBundle/Resources/public/assets/css/ie9.css' filter='cssrewrite' %}
+		<!--[if lte IE 9]><link rel="stylesheet" href="{{ asset_url }}" /><![endif]-->
+		{% endstylesheets %}
     </head>
     <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+		<!-- Header -->
+			<section id="header">
+				<div class="inner">
+					<span class="icon major fa-cloud"></span>
+					{% block header %}{% endblock %}
+				</div>
+			</section>
+	
+	
+		<!-- One -->
+			{% set _section = block('sectionOne') %}
+			{% if _section is not empty %}
+			<section id="one" class="main style1">
+				<div class="container">
+					{{ _section|raw }}
+				</div>
+			</section>
+			{% endif %}
+			
+		<!-- Two -->
+			{% set _section = block('sectionTwo') %}
+			{% if _section is not empty %}
+			<section id="two" class="main style2">
+				<div class="container">
+					{{ _section|raw }}
+				</div>
+			</section>
+			{% endif %}
+
+		<!-- Three -->
+			{% set _section = block('sectionThree') %}
+			{% if _section is not empty %}
+			<section id="three" class="main style1 special">
+				<div class="container">
+					{{ _section|raw }}
+				</div>
+			</section>
+			{% endif %}
+        
+		<!-- Footer -->
+			<section id="footer">
+				<ul class="copyright">
+					<li>&copy; Mateusz Karpiński</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+				</ul>
+			</section>
+
+		<!-- Scripts -->
+		{% javascripts '@AppBundle/Resources/public/assets/js/jquery.min.js' %}
+			<script src="{{ asset_url }}"></script>
+		{% endjavascripts %}
+		{% javascripts '@AppBundle/Resources/public/assets/js/jquery.scrolly.min.js' %}
+			<script src="{{ asset_url }}"></script>
+		{% endjavascripts %}
+		{% javascripts '@AppBundle/Resources/public/assets/js/skel.min.js' %}
+			<script src="{{ asset_url }}"></script>
+		{% endjavascripts %}
+		{% javascripts '@AppBundle/Resources/public/assets/js/util.js' %}
+			<script src="{{ asset_url }}"></script>
+		{% endjavascripts %}
+		{% javascripts '@AppBundle/Resources/public/assets/js/ie/respond.min.js' %}
+			<!--[if lte IE 8]><script src="{{ asset_url }}"></script><![endif]-->
+		{% endjavascripts %}
+		{% javascripts '@AppBundle/Resources/public/assets/js/main.js' %}
+			<script src="{{ asset_url }}"></script>
+		{% endjavascripts %}
     </body>
 </html>

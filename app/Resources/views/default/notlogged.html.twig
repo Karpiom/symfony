@@ -1,5 +1,37 @@
 {% extends 'base.html.twig' %}
 
 {% block header %}
+	<h1>Witaj <strong>nieznajomy</strong>!<br />
+	Aby korzystać z serwisu musisz się zalogować.
+	<ul class="actions">
+		<li><a href="#one" class="button scrolly">Zaloguj się</a></li>
+		<li><a href="#two" class="button scrolly">Zarejestruj się</a></li>
+	</ul>
+{% endblock %}
 
+{% block sectionOne %}
+<div class="row 150%">
+	<div class="6u 12u$(medium)">
+		<header class="major">Zaloguj się</header>
+		{% if error %}
+			<div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+		{% endif %}
+
+		<form action="{{ path('login_check') }}#one" method="post">
+			<label for="username">Email:</label>
+			<input type="text" id="username" name="_username" value="{{ last_username }}" />
+
+			<label for="password">Hasło:</label>
+			<input type="password" id="password" name="_password" />
+
+			<input type="hidden" name="_target_path" value="/" />
+
+			<button type="submit">Zaloguj</button>
+		</form>
+	</div>
+</div>	
+{% endblock %}
+
+{% block sectionTwo %}
+	Rejestracja:
 {% endblock %}
