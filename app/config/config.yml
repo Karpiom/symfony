@@ -30,7 +30,6 @@ framework:
         handler_id:  ~
     fragments:       ~
     http_method_override: true
-    default_locale: pl
 
 # Twig Configuration
 twig:

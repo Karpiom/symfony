@@ -17,19 +17,16 @@ class DefaultController extends Controller
 		
 		if(!$auth_checker->isGranted('ROLE_USER'))
 		{
-			$authenticationUtils = $this->get('security.authentication_utils');
-			$error = $authenticationUtils->getLastAuthenticationError();
-			$lastUsername = $authenticationUtils->getLastUsername();
-			
-			return $this->render('default/notlogged.html.twig', array(
-				'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..'),
-				'error' => $error,
-				'last_username' => $lastUsername
-			));
+			return $this->redirectToRoute('login');
 		}
 		
+		$user = $this->getUser();
+		
 		return $this->render('default/index.html.twig', array(
-				'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..')
+				'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..'),
+				'user_FN' => $user->getFirstName(),
+				'user_LN' => $user->getLastName(),
+				'is_admin' => $user->hasRole('ROLE_ADMIN')
 		));
     }
 }

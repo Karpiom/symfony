@@ -3,8 +3,11 @@
 namespace AppBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use AppBundle\Form\RegisterForm;
+use AppBundle\Entity\User;
 
 class SecurityController extends Controller
 {
@@ -15,18 +18,20 @@ class SecurityController extends Controller
     {
 		$authenticationUtils = $this->get('security.authentication_utils');
 		
-		// get the login error if there is one
 		$error = $authenticationUtils->getLastAuthenticationError();
-
-		// last username entered by the user
 		$lastUsername = $authenticationUtils->getLastUsername();
 
+        $form = $this->createForm(new RegisterForm(), new User(), array(
+			'action' => $this->generateUrl('user_registration').'#one',
+			'method' => 'POST',
+		));
+		
 		return $this->render(
 			'default/notlogged.html.twig',
 			array(
-				// last username entered by the user
+				'error' => $error,
 				'last_username' => $lastUsername,
-				'error'         => $error,
+				'regform' => $form->createView()
 			)
 		);
     }
@@ -36,7 +41,24 @@ class SecurityController extends Controller
      */
     public function loginCheckAction()
     {
-        // this controller will not be executed,
-        // as the route is handled by the Security system
     }
+	
+    /**
+     * @Route("/loggedout", name="logout_complete")
+     */
+	public function logoutComplete()
+	{
+        $form = $this->createForm(new RegisterForm(), new User(), array(
+			'action' => $this->generateUrl('user_registration').'#one',
+			'method' => 'POST',
+		));
+
+		return $this->render(
+			'default/loggedout.html.twig',
+			array(
+				'last_username' => $this->get('security.authentication_utils')->getLastUsername(),
+				'regform' => $form->createView()
+			)
+		);
+	}
 }

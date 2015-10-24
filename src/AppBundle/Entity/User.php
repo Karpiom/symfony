@@ -23,11 +23,13 @@ class User implements UserInterface, \Serializable
 	
     /**
      * @ORM\Column(type="string", length=25)
+     * @Assert\NotBlank()
      */
     protected $firstName;
 
     /**
      * @ORM\Column(type="string", length=32)
+     * @Assert\NotBlank()
      */
     protected $lastName;
 
@@ -50,18 +52,19 @@ class User implements UserInterface, \Serializable
     protected $password;
 	
 	/**
+     * @ORM\Column(name="is_active", type="boolean", options={"default:true"})
+     */
+    private $isActive;
+	
+	/**
      * @ORM\Column(type="boolean", options={"default":false})
      */
     private $access;
 	
-	/**
-     * @ORM\Column(name="is_active", type="boolean")
-     */
-    private $isActive;
-	
 	public function __construct()
     {
         $this->isActive = true;
+		$this->access = false;
     }
 
     /**
@@ -183,6 +186,11 @@ class User implements UserInterface, \Serializable
 			return array('ROLE_ADMIN', 'ROLE_USER');
     }
 	
+	public function hasRole($role)
+	{
+		return in_array($role, self::getRoles());
+	}
+	
 	public function eraseCredentials()
     {
     }
@@ -278,4 +286,28 @@ class User implements UserInterface, \Serializable
     {
         return $this->access;
     }
+	
+    /**
+     * Get plainPassword
+     *
+     * @return string
+     */
+	public function getPlainPassword()
+	{
+		return $this->plainPassword;
+	}
+	
+	/**
+     * Set plainPassword
+     *
+     * @param string $newPassword
+     *
+     * @return User
+     */
+	public function setPlainPassword($pass)
+	{
+		$this->plainPassword = $pass;
+		
+		return $this;
+	}
 }

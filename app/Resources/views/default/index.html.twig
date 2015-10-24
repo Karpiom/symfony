@@ -1,5 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block header %}
-still here
+	<h1>Witaj <strong>{{ user_FN }} {{ user_LN }}</strong>!<br />
+	
+	<ul class="actions">
+		<li><a href="{{ path('logout') }}" class="button scrolly">Wyloguj się</a></li>
+	</ul>
 {% endblock %}
