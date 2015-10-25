@@ -2007,11 +2007,11 @@
 
 /* Form */
 
-	form {
+	form:not(.ignorecss) {
 		margin: 0 0 2em 0;
 	}
 
-	label {
+	label:not(.ignorecss) {
 		color: #555;
 		display: block;
 		font-size: 0.9em;
@@ -2019,7 +2019,7 @@
 		margin: 0 0 1em 0;
 	}
 
-	input[type="text"],
+	input[type="text"]:not(.ignorecss),
 	input[type="password"],
 	input[type="email"],
 	select,
@@ -2040,7 +2040,7 @@
 		width: 100%;
 	}
 
-		input[type="text"]:invalid,
+		input[type="text"]:not(.ignorecss):invalid,
 		input[type="password"]:invalid,
 		input[type="email"]:invalid,
 		select:invalid,
@@ -2048,7 +2048,7 @@
 			box-shadow: none;
 		}
 
-		input[type="text"]:focus,
+		input[type="text"]:not(.ignorecss):focus,
 		input[type="password"]:focus,
 		input[type="email"]:focus,
 		select:focus,
@@ -2089,7 +2089,7 @@
 			display: none;
 		}
 
-	input[type="text"],
+	input[type="text"]:not(.ignorecss),
 	input[type="password"],
 	input[type="email"],
 	select {
@@ -2566,7 +2566,7 @@
 
 /* Button */
 
-	input[type="submit"],
+	input[type="submit"]:not(.ignorecss),
 	input[type="reset"],
 	input[type="button"],
 	button,
@@ -2599,7 +2599,7 @@
 		white-space: nowrap;
 	}
 
-		input[type="submit"]:hover,
+		input[type="submit"]:not(.ignorecss):hover,
 		input[type="reset"]:hover,
 		input[type="button"]:hover,
 		button:hover,
@@ -2607,7 +2607,7 @@
 			background-color: rgba(144, 144, 144, 0.075);
 		}
 
-		input[type="submit"]:active,
+		input[type="submit"]:not(.ignorecss):active,
 		input[type="reset"]:active,
 		input[type="button"]:active,
 		button:active,
@@ -2615,7 +2615,7 @@
 			background-color: rgba(144, 144, 144, 0.2);
 		}
 
-		input[type="submit"].icon,
+		input[type="submit"]:not(.ignorecss).icon,
 		input[type="reset"].icon,
 		input[type="button"].icon,
 		button.icon,
@@ -2623,7 +2623,7 @@
 			padding-left: 1.35em;
 		}
 
-			input[type="submit"].icon:before,
+			input[type="submit"]:not(.ignorecss).icon:before,
 			input[type="reset"].icon:before,
 			input[type="button"].icon:before,
 			button.icon:before,
@@ -2631,7 +2631,7 @@
 				margin-right: 0.5em;
 			}
 
-		input[type="submit"].fit,
+		input[type="submit"]:not(.ignorecss).fit,
 		input[type="reset"].fit,
 		input[type="button"].fit,
 		button.fit,
@@ -2641,7 +2641,7 @@
 			width: 100%;
 		}
 
-		input[type="submit"].small,
+		input[type="submit"]:not(.ignorecss).small,
 		input[type="reset"].small,
 		input[type="button"].small,
 		button.small,
@@ -2649,7 +2649,7 @@
 			font-size: 0.7em;
 		}
 
-		input[type="submit"].big,
+		input[type="submit"]:not(.ignorecss).big,
 		input[type="reset"].big,
 		input[type="button"].big,
 		button.big,
@@ -2657,7 +2657,7 @@
 			font-size: 1.25em;
 		}
 
-		input[type="submit"].special,
+		input[type="submit"]:not(.ignorecss).special,
 		input[type="reset"].special,
 		input[type="button"].special,
 		button.special,
@@ -2667,7 +2667,7 @@
 			color: #fff !important;
 		}
 
-			input[type="submit"].special:hover,
+			input[type="submit"]:not(.ignorecss).special:hover,
 			input[type="reset"].special:hover,
 			input[type="button"].special:hover,
 			button.special:hover,
@@ -2675,7 +2675,7 @@
 				background-color: #626262;
 			}
 
-			input[type="submit"].special:active,
+			input[type="submit"]:not(.ignorecss).special:active,
 			input[type="reset"].special:active,
 			input[type="button"].special:active,
 			button.special:active,
@@ -2683,7 +2683,7 @@
 				background-color: #484848;
 			}
 
-		input[type="submit"].disabled, input[type="submit"]:disabled,
+		input[type="submit"]:not(.ignorecss).disabled, input[type="submit"]:not(.ignorecss):disabled,
 		input[type="reset"].disabled,
 		input[type="reset"]:disabled,
 		input[type="button"].disabled,
@@ -2710,7 +2710,7 @@
 			background-color: #333;
 			color: rgba(255, 255, 255, 0.75);
 			background-attachment: fixed,							fixed;
-			background-image: url("images/overlay1.png"), url("../../images/header.jpg");
+			/*background-image: url("images/overlay1.png"), url("../../images/header.jpg");*/
 			background-size: auto,							cover;
 		}
 
@@ -2734,7 +2734,7 @@
 				background: #ffffff;
 			}
 
-			.main.style2 input[type="submit"],
+			.main.style2 input[type="submit"]:not(.ignorecss),
 			.main.style2 input[type="reset"],
 			.main.style2 input[type="button"],
 			.main.style2 button,
@@ -2743,7 +2743,7 @@
 				color: #ffffff !important;
 			}
 
-				.main.style2 input[type="submit"]:hover,
+				.main.style2 input[type="submit"]:not(.ignorecss):hover,
 				.main.style2 input[type="reset"]:hover,
 				.main.style2 input[type="button"]:hover,
 				.main.style2 button:hover,
@@ -2751,7 +2751,7 @@
 					background-color: rgba(255, 255, 255, 0.125);
 				}
 
-				.main.style2 input[type="submit"]:active,
+				.main.style2 input[type="submit"]:not(.ignorecss):active,
 				.main.style2 input[type="reset"]:active,
 				.main.style2 input[type="button"]:active,
 				.main.style2 button:active,
@@ -2759,7 +2759,7 @@
 					background-color: rgba(255, 255, 255, 0.25);
 				}
 
-				.main.style2 input[type="submit"].special,
+				.main.style2 input[type="submit"]:not(.ignorecss).special,
 				.main.style2 input[type="reset"].special,
 				.main.style2 input[type="button"].special,
 				.main.style2 button.special,
@@ -2769,7 +2769,7 @@
 					color: #333 !important;
 				}
 
-					.main.style2 input[type="submit"].special:hover,
+					.main.style2 input[type="submit"]:not(.ignorecss).special:hover,
 					.main.style2 input[type="reset"].special:hover,
 					.main.style2 input[type="button"].special:hover,
 					.main.style2 button.special:hover,
@@ -2778,7 +2778,7 @@
 						color: #ffffff !important;
 					}
 
-					.main.style2 input[type="submit"].special:active,
+					.main.style2 input[type="submit"]:not(.ignorecss).special:active,
 					.main.style2 input[type="reset"].special:active,
 					.main.style2 input[type="button"].special:active,
 					.main.style2 button.special:active,
@@ -2829,7 +2829,7 @@
 			background: #ffffff;
 		}
 
-		#header input[type="submit"],
+		#header input[type="submit"]:not(.ignorecss),
 		#header input[type="reset"],
 		#header input[type="button"],
 		#header button,
@@ -2838,7 +2838,7 @@
 			color: #ffffff !important;
 		}
 
-			#header input[type="submit"]:hover,
+			#header input[type="submit"]:not(.ignorecss):hover,
 			#header input[type="reset"]:hover,
 			#header input[type="button"]:hover,
 			#header button:hover,
@@ -2846,7 +2846,7 @@
 				background-color: rgba(255, 255, 255, 0.125);
 			}
 
-			#header input[type="submit"]:active,
+			#header input[type="submit"]:not(.ignorecss):active,
 			#header input[type="reset"]:active,
 			#header input[type="button"]:active,
 			#header button:active,
@@ -2854,7 +2854,7 @@
 				background-color: rgba(255, 255, 255, 0.25);
 			}
 
-			#header input[type="submit"].special,
+			#header input[type="submit"]:not(.ignorecss).special,
 			#header input[type="reset"].special,
 			#header input[type="button"].special,
 			#header button.special,
@@ -2864,7 +2864,7 @@
 				color: #4686a0 !important;
 			}
 
-				#header input[type="submit"].special:hover,
+				#header input[type="submit"]:not(.ignorecss).special:hover,
 				#header input[type="reset"].special:hover,
 				#header input[type="button"].special:hover,
 				#header button.special:hover,
@@ -2873,7 +2873,7 @@
 					color: #ffffff !important;
 				}
 
-				#header input[type="submit"].special:active,
+				#header input[type="submit"]:not(.ignorecss).special:active,
 				#header input[type="reset"].special:active,
 				#header input[type="button"].special:active,
 				#header button.special:active,
@@ -2902,7 +2902,7 @@
 			position: relative;
 		}
 
-			#header .actions:after {
+		/*	#header .actions:after {
 				background: #ffffff;
 				content: '';
 				height: 100vh;
@@ -2910,7 +2910,7 @@
 				position: absolute;
 				top: 100%;
 				width: 1px;
-			}
+			}*/
 
 		#header .inner {
 			-moz-transition: -moz-transform 1.5s ease, opacity 2s ease;
@@ -3014,7 +3014,7 @@
 			background: #ffffff;
 		}
 
-		#footer input[type="submit"],
+		#footer input[type="submit"]:not(.ignorecss),
 		#footer input[type="reset"],
 		#footer input[type="button"],
 		#footer button,
@@ -3023,7 +3023,7 @@
 			color: #ffffff !important;
 		}
 
-			#footer input[type="submit"]:hover,
+			#footer input[type="submit"]:not(.ignorecss):hover,
 			#footer input[type="reset"]:hover,
 			#footer input[type="button"]:hover,
 			#footer button:hover,
@@ -3031,7 +3031,7 @@
 				background-color: rgba(255, 255, 255, 0.125);
 			}
 
-			#footer input[type="submit"]:active,
+			#footer input[type="submit"]:not(.ignorecss):active,
 			#footer input[type="reset"]:active,
 			#footer input[type="button"]:active,
 			#footer button:active,
@@ -3039,7 +3039,7 @@
 				background-color: rgba(255, 255, 255, 0.25);
 			}
 
-			#footer input[type="submit"].special,
+			#footer input[type="submit"]:not(.ignorecss).special,
 			#footer input[type="reset"].special,
 			#footer input[type="button"].special,
 			#footer button.special,
@@ -3049,7 +3049,7 @@
 				color: #4686a0 !important;
 			}
 
-				#footer input[type="submit"].special:hover,
+				#footer input[type="submit"]:not(.ignorecss).special:hover,
 				#footer input[type="reset"].special:hover,
 				#footer input[type="button"].special:hover,
 				#footer button.special:hover,
@@ -3058,7 +3058,7 @@
 					color: #ffffff !important;
 				}
 
-				#footer input[type="submit"].special:active,
+				#footer input[type="submit"]:not(.ignorecss).special:active,
 				#footer input[type="reset"].special:active,
 				#footer input[type="button"].special:active,
 				#footer button.special:active,
@@ -3271,7 +3271,7 @@
 
 		/* Button */
 
-			input[type="submit"],
+			input[type="submit"]:not(.ignorecss),
 			input[type="reset"],
 			input[type="button"],
 			button,
@@ -3344,7 +3344,7 @@
 
 		/* Button */
 
-			input[type="submit"],
+			input[type="submit"]:not(.ignorecss),
 			input[type="reset"],
 			input[type="button"],
 			.button {
@@ -3418,4 +3418,8 @@
 				padding: 2em 1em 2em 1em ;
 			}
 
+	}
+	
+	.ignorecss {
+		font-size: initial;
 	}

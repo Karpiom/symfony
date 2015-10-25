@@ -28,7 +28,7 @@ class Task
 	protected $description;
 
 	/**
-	 * @ORM\Column(type="datatime")
+	 * @ORM\Column(type="datetime")
 	 */
 	protected $endTime;
 	
@@ -41,6 +41,12 @@ class Task
 	 * @ORM\Column(type="smallint", options={"default":0})
 	 */
 	protected $priority;
+	
+	/**
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="tasks")
+     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
+     */
+    protected $category;
 
     /**
      * Get id
@@ -139,16 +145,6 @@ class Task
     }
 
     /**
-     * Is ended
-     *
-     * @return boolean
-     */
-    public function isEnded()
-    {
-        return $this->ended;
-    }
-
-    /**
      * Set priority
      *
      * @param integer $priority
@@ -170,5 +166,15 @@ class Task
     public function getPriority()
     {
         return $this->priority;
+    }
+
+    /**
+     * Get ended
+     *
+     * @return boolean
+     */
+    public function getEnded()
+    {
+        return $this->ended;
     }
 }

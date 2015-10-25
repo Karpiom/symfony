@@ -23,7 +23,7 @@ class Category
     protected $name;
 
 	/**
-	 * @ORM\OneToMany(targetEntity="Task", mappedBy="category", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
+	 * @ORM\OneToMany(targetEntity="Task", mappedBy="category")
 	 */
     protected $tasksList;
 	

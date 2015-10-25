@@ -1,76 +1,241 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    <div id="wrapper">
-        <div id="container">
-            <div id="welcome">
-                <h1><span>Welcome to</span> Symfony {{ constant('Symfony\\Component\\HttpKernel\\Kernel::VERSION') }}</h1>
-            </div>
-
-            <div id="status">
-                <p>
-                    <svg id="icon-status" width="1792" height="1792" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1671 566q0 40-28 68l-724 724-136 136q-28 28-68 28t-68-28l-136-136-362-362q-28-28-28-68t28-68l136-136q28-28 68-28t68 28l294 295 656-657q28-28 68-28t68 28l136 136q28 28 28 68z" fill="#759E1A"/></svg>
-
-                    Your application is ready to start working on it at:
-                    <code>{{ base_dir }}/</code>
-                </p>
-            </div>
-
-            <div id="next">
-                <h2>What's next?</h2>
-                <p>
-                    <svg id="icon-book" version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="-12.5 9 64 64" enable-background="new -12.5 9 64 64" xml:space="preserve">
-                        <path fill="#AAA" d="M6.8,40.8c2.4,0.8,4.5-0.7,4.9-2.5c0.2-1.2-0.3-2.1-1.3-3.2l-0.8-0.8c-0.4-0.5-0.6-1.3-0.2-1.9
-                            c0.4-0.5,0.9-0.8,1.8-0.5c1.3,0.4,1.9,1.3,2.9,2.2c-0.4,1.4-0.7,2.9-0.9,4.2l-0.2,1c-0.7,4-1.3,6.2-2.7,7.5
-                            c-0.3,0.3-0.7,0.5-1.3,0.6c-0.3,0-0.4-0.3-0.4-0.3c0-0.3,0.2-0.3,0.3-0.4c0.2-0.1,0.5-0.3,0.4-0.8c0-0.7-0.6-1.3-1.3-1.3
-                            c-0.6,0-1.4,0.6-1.4,1.7s1,1.9,2.4,1.8c0.8,0,2.5-0.3,4.2-2.5c2-2.5,2.5-5.4,2.9-7.4l0.5-2.8c0.3,0,0.5,0.1,0.8,0.1
-                            c2.4,0.1,3.7-1.3,3.7-2.3c0-0.6-0.3-1.2-0.9-1.2c-0.4,0-0.8,0.3-1,0.8c-0.1,0.6,0.8,1.1,0.1,1.5c-0.5,0.3-1.4,0.6-2.7,0.4l0.3-1.3
-                            c0.5-2.6,1-5.7,3.2-5.8c0.2,0,0.8,0,0.8,0.4c0,0.2,0,0.2-0.2,0.5c-0.2,0.3-0.3,0.4-0.2,0.7c0,0.7,0.5,1.1,1.2,1.1
-                            c0.9,0,1.2-1,1.2-1.4c0-1.2-1.2-1.8-2.6-1.8c-1.5,0.1-2.8,0.9-3.7,2.1c-1.1,1.3-1.8,2.9-2.3,4.5c-0.9-0.8-1.6-1.8-3.1-2.3
-                            c-1.1-0.7-2.3-0.5-3.4,0.3c-0.5,0.4-0.8,1-1,1.6c-0.4,1.5,0.4,2.9,0.8,3.4l0.9,1c0.2,0.2,0.6,0.8,0.4,1.5c-0.3,0.8-1.2,1.3-2.1,1
-                            c-0.4-0.2-1-0.5-0.9-0.9c0.1-0.2,0.2-0.3,0.3-0.5s0.1-0.3,0.1-0.3c0.2-0.6-0.1-1.4-0.7-1.6c-0.6-0.2-1.2,0-1.3,0.8
-                            C4.3,38.4,4.7,40,6.8,40.8z M46.1,20.9c0-4.2-3.2-7.5-7.1-7.5h-3.8C34.8,10.8,32.7,9,30.2,9L-2.3,9.1c-2.8,0.1-4.9,2.4-4.9,5.4
-                            L-7,58.6c0,4.8,8.1,13.9,11.6,14.1l34.7-0.1c3.9,0,7-3.4,7-7.6L46.1,20.9z M-0.3,36.4c0-8.6,6.5-15.6,14.5-15.6
-                            c8,0,14.5,7,14.5,15.6S22.1,52,14.2,52C6.1,52-0.3,45-0.3,36.4z M42.1,65.1c0,1.8-1.5,3.1-3.1,3.1H4.6c-0.7,0-3-1.8-4.5-4.4h30.4
-                            c2.8,0,5-2.4,5-5.4V17.9h3.7c1.6,0,2.9,1.4,2.9,3.1V65.1L42.1,65.1z"/>
-                    </svg>
-
-                    Read Symfony documentation to learn
-                    <a href="http://symfony.com/doc/{{ constant('Symfony\\Component\\HttpKernel\\Kernel::VERSION')[:3] }}/book/page_creation.html">
-                        How to create your first page in Symfony
-                    </a>
-                </p>
-            </div>
-
-        </div>
-    </div>
+{% block header %}
+	<h1>Witaj <strong>{{ user_FN }} {{ user_LN }}</strong>!</h1>
+	
+	<ul class="actions">
+	{% if app.user and is_granted('ROLE_ADMIN') %}
+		<li><a href="#two" class="button scrolly">Opcje administratora</a></li>
+	{% endif %}
+		<li><a hreg="#one" class="button scrolly">Lista zadań</a></li>
+		<li><a href="{{ path('logout') }}" class="button scrolly">Wyloguj się</a></li>
+	</ul>
 {% endblock %}
 
-{% block stylesheets %}
-<style>
-    body { background: #F5F5F5; font: 18px/1.5 sans-serif; }
-    h1, h2 { line-height: 1.2; margin: 0 0 .5em; }
-    h1 { font-size: 36px; }
-    h2 { font-size: 21px; margin-bottom: 1em; }
-    p { margin: 0 0 1em 0; }
-    a { color: #0000F0; }
-    a:hover { text-decoration: none; }
-    code { background: #F5F5F5; max-width: 100px; padding: 2px 6px; word-wrap: break-word; }
-    #wrapper { background: #FFF; margin: 1em auto; max-width: 800px; width: 95%; }
-    #container { padding: 2em; }
-    #welcome, #status { margin-bottom: 2em; }
-    #welcome h1 span { display: block; font-size: 75%; }
-    #icon-status, #icon-book { float: left; height: 64px; margin-right: 1em; margin-top: -4px; width: 64px; }
-    #icon-book { display: none; }
+{% block bodyEnd %}
+	<div id="addCategoryDialog" title="Dodaj kategorię">
+		<form onSubmit="return onAddCategory();" class="ignorecss">
+			<label for="cat_name" class="ignorecss">Nazwa</label><input type="text" id="cat_name" name="cat_name" class="ignorecss" />
+			<input type="submit" value="Dodaj" class="ignorecss" />
+		</form>
+	</div>
+{% endblock %}
 
-    @media (min-width: 768px) {
-        #wrapper { width: 80%; margin: 2em auto; }
-        #icon-book { display: inline-block; }
-        #status a, #next a { display: block; }
+{% block sectionOne %}
+	
+	<script>
+		function onAddCategory()
+		{
+			if($("#cat_name").val() == "")
+			{
+				alert("Musisz podać nazwę kategorii.");
+				return false;
+			}
+			
+			$.ajax({
+				type: "POST",
+				url: "{{ path('user_addcategory') }}",
+				data: {
+					cat_name: $("#cat_name").val()
+				},
+				success: function(r) {
+					if(r == "ALREADY_EXISTS")
+						alert('Wybrana nazwa kategorii już istnieje, proszę podać inną.');
+					else if(isNaN(r))
+						alert("Wystąpił nieznany błąd.");
+					else
+					{
+						alert("Kategoria została dodana.");
+						$("#catTable").append("<tr><td>" + r + "</td><td>" + $("#cat_name").val() + "</td><td><a href='javascript:showTasks(" + r + ");'>Zobacz</a></td>{% if is_granted('ROLE_ADMIN') %}<td><a href='javascript:removeCategory(" + r + ");'>Usuń</a></td>{% endif %}</tr>");
+					}
+				},
+				error: function(err) {
+					alert("Nie można dodać nowej kategorii.");
+				}
+			}).always(function() {
+				$("#addCategoryDialog").dialog("close");
+				$("#cat_name").val("");
+			});
+			return false;
+		}
+		
+		function addCategory()
+		{
+			$("#addCategoryDialog").dialog("open");
+		}
+		
+		{% if is_granted('ROLE_ADMIN') %}
+			function removeCategory(id)
+			{
+				$.ajax({
+					type: "POST",
+					url: "{{ path('user_remcategory') }}",
+					data: {
+						id: id
+					},
+					success: function(r) {
+						if(r == "NOT_FOUND")
+							alert('Wybrana kategoria musiała zostać usunięta wcześniej, gdyż nie została znaleziona.');
+						else if(isNaN(r))
+							alert("Wystąpił nieznany błąd.");
+						else
+						{
+							alert("Kategoria została usunięta.");
+							$("#cat" + r + "Tr").remove();
+						}
+					},
+					error: function(err) {
+						alert("Nie można usunąć nowej kategorii.");
+					}
+				});
+			}
+		{% endif %}
+	
+	</script>
+	<div class="row 150%">
+		<div class="6u 12u$(medium)">
+			<header class="major">
+				<h2>Lista kategorii</h2>
+				<h5><button onClick="javascript:addCategory();">Dodaj kategorię</button></h5>
+			</header>
+			<table id="catTable">
+				<tr><th>ID</th><th>Nazwa</th><th>Zadania</th>{% if is_granted('ROLE_ADMIN') %}<th>Usuń kategorię</th>{% endif %}</tr>
+				{% for category in categories %}
+					<tr id="cat{{ category.id }}Tr">
+						<td>{{ category.id }}</td>
+						<td>{{ category.name }}</td>
+						<td><a href="javascript:showTasks({{ category.id }});">Zobacz</a></td>
+						{% if is_granted('ROLE_ADMIN') %}
+							<td><a href="javascript:removeCategory({{ category.id }});">Usuń</a></td>
+						{% endif %}
+					</tr>
+				{% endfor %}
+			</table>
+		</div>
+	</div>
+{% endblock %}
 
-        @-webkit-keyframes fade-in { 0% { opacity: 0; } 100% { opacity: 1; } }
-        @keyframes fade-in { 0% { opacity: 0; } 100% { opacity: 1; } }
-        .sf-toolbar { opacity: 0; -webkit-animation: fade-in 1s .2s forwards; animation: fade-in 1s .2s forwards;}
-    }
-</style>
+{% block sectionTwo %}{% if app.user and is_granted('ROLE_ADMIN') %}
+		<script>
+			function editUser(userid)
+			{
+				$("#loading_admin").show();
+				$.ajax("/getuser/" + userid).done(function(r) {
+					$("#uid").val(r.id);
+					$("#ufirst").val(r.first);
+					$("#ulast").val(r.last);
+					$("#uemail").val(r.email);
+					$("#uactive").prop("checked", r.isactive);
+					$("#uaccess").prop("checked", r.isadmin);
+				}).always(function() {
+					$("#loading_admin").hide();
+				});
+			
+			}
+			
+			function onSubmit()
+			{
+				if($("#uid").val() == "")
+				{
+					alert("Musisz wybrać użytkownika, którego chcesz zaktualizować...");
+					return false;
+				}
+				if(confirm("Czy na pewno chcesz zaktualizować tego użytkownika?"))
+				{
+					$("#loading_admin").show();
+					$.ajax({
+						type: "POST",
+						url: "{{ path('admin_setuser') }}",
+						data: {
+							id: parseInt($("#uid").val()),
+							first: $("#ufirst").val(),
+							last: $("#ulast").val(),
+							email: $("#uemail").val(),
+							pass: $("#upass").val(),
+							active: $("#uactive").prop("checked") ? 1 : 0,
+							access: $("#uaccess").prop("checked") ? 1 : 0
+						},
+						success: function(r) {
+							if(r != "OK")
+								alert(r);
+						},
+						error: function(err) {
+							alert("Nie można zaktualizować danych użytkownika.");
+						}
+					}).always(function() {
+						$("#loading_admin").hide();
+						$("#upass").val("");
+					});
+				}
+				return false;
+			}
+		</script>
+	
+		<div class="row 150%">
+			<div class="6u 12u$(medium)">
+				<header class="major">
+					<h2>Lista użytkowników</h2>
+				</header>
+				<table>
+					<tr>
+						<th>ID</th>
+						<th>Imię i Nazwisko</th>
+						<th>Email</th>
+						<th>Edycja</th>
+					</tr>
+					{% for user in users %}
+						<tr>
+							<td>{{ user.id }}</td>
+							<td>{{ user.firstName }} {{ user.lastName }}</td>
+							<td>{{ user.email }}</td>
+							<td>
+							{% if app.user.id != user.id %}
+								<a href="javascript:editUser({{ user.id }});">Edytuj</a>
+							{% endif %}
+							</td>
+						</tr>
+					{% endfor %}
+				</table>
+			</div>
+			<div class="6u$ 12u$(medium)">
+				<form onSubmit="return onSubmit();">
+					<label for="uid" style="font-size: initial;">ID</label>
+					<input type="number" id="uid" name="uid" value="" disabled="disabled" style="font-size: initial;" />
+					<img id="loading_admin" src="{{ asset('images/loader.gif') }}" style="display: none; width: 32px; height: 32px;" />
+					<label for="ufirst" style="font-size: initial;">Imię</label>
+					<input type="text" style="font-size: initial;" value="" id="ufirst" name="ufirst" />
+					<label for="ulast" style="font-size: initial;">Nazwisko</label>
+					<input type="text" style="font-size: initial;" value="" id="ulast" name="ulast" />
+					<label for="uemail" style="font-size: initial;">Email</label>
+					<input type="text" style="font-size: initial;" value="" id="uemail" name="uemail" />
+					<label for="upass" style="font-size: initial;">Hasło</label>
+					<input type="text" style="font-size: initial;" value="" id="upass" name="upass" />
+					<br />
+					<input type="checkbox" id="uactive" name="uactive" checked="checked" /><label for="uactive" style="font-size: initial;">Czy konto jest aktywne?</label>
+					<input type="checkbox" id="uaccess" name="uaccess" /><label for="uaccess" style="font-size: initial;">Czy jest adminem?</label>
+					<br />
+					<input type="submit" value="Aktualizuj" style="font-size: initial;" />
+				</form>
+			</div>
+		</div>
+	
+{% endif %}{% endblock %}
+
+{% block headScript %}
+<script>
+	$(function()
+	{
+		$( "#addCategoryDialog" ).dialog({
+			autoOpen: false,
+			show: {
+				effect: "blind",
+				duration: 1000
+			},
+			hide: {
+				effect: "blind",
+				duration: 1000
+			}
+		});
+	});
+</script>
 {% endblock %}

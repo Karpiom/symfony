@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block header %}
+	<h1>Witaj <strong>nieznajomy</strong>!</h1>
+	Aby korzystać z serwisu musisz się zalogować.
+	<ul class="actions">
+		<li><a href="#one" class="button scrolly">Zarejestruj się</a></li>
+	</ul>
+{% endblock %}
+
+{% block sectionOne %}
+<div class="row 150%">
+	<div class="6u 12u$(medium)">
+		<header class="major">Zarejestruj się</header>
+		{{ form_start(regform) }}
+			{{ form_row(regform.firstName) }}
+			{{ form_row(regform.lastName) }}
+			{{ form_row(regform.email) }}
+			{{ form_row(regform.plainPassword.first) }}
+			{{ form_row(regform.plainPassword.second) }}
+
+			<button type="submit" style="margin-top:10px;">Zarejestruj!</button>
+		{{ form_end(regform) }}
+	</div>
+</div>	
+{% endblock %}
