@@ -13,9 +13,36 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-        // replace this example code with whatever you need
-        return $this->render('default/index.html.twig', array(
-            'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..'),
-        ));
+		$auth_checker = $this->get('security.authorization_checker');
+		
+		if(!$auth_checker->isGranted('ROLE_USER'))
+		{
+			return $this->redirectToRoute('login');
+		}
+		
+		$user = $this->getUser();
+		
+		$users = array();
+		
+		if($user->hasRole('ROLE_ADMIN'))
+		{
+			$repositoryUsers = $this->getDoctrine()->getRepository("AppBundle:User");
+			$users = $repositoryUsers->findAll();
+		}
+		
+		$repositoryCategories = $this->getDoctrine()->getRepository("AppBundle:Category");
+		$qbuilder = $repositoryCategories->createQueryBuilder('c')
+					->orderBy('c.name', 'DESC');
+		
+		$categories = $qbuilder->getQuery()->getResult();
+		
+		return $this->render('default/index.html.twig', array(
+				'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..'),
+				'user_FN' => $user->getFirstName(),
+				'user_LN' => $user->getLastName(),
+				'users' => $users,
+				'categories' => $categories
+				
+		));
     }
 }
