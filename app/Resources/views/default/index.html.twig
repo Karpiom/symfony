@@ -5,9 +5,9 @@
 	
 	<ul class="actions">
 	{% if app.user and is_granted('ROLE_ADMIN') %}
-		<li><a href="#two" class="button scrolly">Opcje administratora</a></li>
+		<li><a href="#three" class="button scrolly">Opcje administratora</a></li>
 	{% endif %}
-		<li><a hreg="#one" class="button scrolly">Lista zadań</a></li>
+		<li><a href="#one" class="button scrolly">Lista zadań</a></li>
 		<li><a href="{{ path('logout') }}" class="button scrolly">Wyloguj się</a></li>
 	</ul>
 {% endblock %}
@@ -22,7 +22,6 @@
 {% endblock %}
 
 {% block sectionOne %}
-	
 	<script>
 		function onAddCategory()
 		{
@@ -115,7 +114,104 @@
 	</div>
 {% endblock %}
 
-{% block sectionTwo %}{% if app.user and is_granted('ROLE_ADMIN') %}
+{% block sectionTwo %}
+	<div id="showtaskwnd" title="Szczegóły zadania" class="ignorecss">
+		Nazwa zadania: <span style="font-weight:bold;" id="showtaskwnd_name" class="ignorecss"></span></span><br />
+		Opis zadania: <textarea id="showtaskwnd_descr" class="ignorecss" disabled="disabled"></textarea>
+		Data zakończenia: <span style="font-weight:bold;" id="showtaskwnd_endtime" class="ignorecss"></span></span><br />
+		Priorytet: <span style="font-weight:bold;" id="showtaskwnd_priority" class="ignorecss"></span><br />
+		Zakończone: <span class="ignorecss" style="font-weight:bold;" id="showtaskwnd_ended">tak</span><br />
+	</div>
+	<script>
+		var currCategory = -1;
+		var currPage = 1;
+		var currTasks = [];
+		
+		function getDateFromString(str)
+		{
+			str = str.substr(0, str.indexOf(' '));
+			var res = str.split('-');
+			return res[2] + '.' + res[1] + '.' + res[0];
+		}
+		
+		function showTask(id)
+		{
+			$("#showtaskwnd").dialog("open");
+			var task = currTasks[id];
+			$("#showtaskwnd_name").html(task.name)
+			$("#showtaskwnd_descr").html(task.description);
+			$("#showtaskwnd_endtime").html(getDateFromString(task.endtime.date));
+			$("#showtaskwnd_ended").html(task.ended ? "tak" : "nie");
+			$("#showtaskwnd_priority").html(task.priority);
+		}
+		
+		function showTasks(id)
+		{
+			$.ajax({
+				type: "POST",
+				url: "/gettasks/" + id + "/1/name/ASC",
+				success: function(r) {
+					if(r.pages < 1)
+					{
+						//alert("Nie ma żadnych zadań w wybranej kategorii.");
+						$("#addtaskbn").show();
+						currPage = 1;
+						currCategory = id;
+						$("#taskshere").html("Brak zadań w wybranej kategorii.");
+						$('html,body').animate({
+						  scrollTop: $("#two").offset().top
+						}, 1000);
+					}
+					else
+					{
+						//alert("Printing...");
+						$("#addtaskbn").show();
+						currPage = 1;
+						currCategory = id;
+						currTasks = [];
+						
+						var t = $("<table></table>");
+						t.html('<tr><th>ID</th><th>Nazwa</th><th>Data zakończenia</th><th>Priorytet</th><th>Szczegóły</th></tr>');
+						for(var i = 0; i < r.data.length; i++)
+						{
+							var tr = $("<tr></tr>");
+							tr.html('<td>' + r.data[i].id + '</td><td>' + r.data[i].name + '</td><td>' + getDateFromString(r.data[i].endtime.date) + '</td><td>' + r.data[i].priority + '</td><td><a href="javascript:showTask('+i+');">Zobacz</a></td>');
+							currTasks[i] = r.data[i];
+							t.append(tr);
+						}
+						
+						$("#taskshere").html("").append(t);
+						
+						$('html,body').animate({
+							scrollTop: $("#two").offset().top
+						}, 1000);
+					}
+				},
+				error: function(err) {
+					//alert("Nie można pobrać listy zadań.");
+					currCategory = -1;
+					currPage = 1;
+					$("#taskshere").html('Musisz wybrać kategorię na liście <a href="#one" class="scrolly">wyżej</a>.');
+					$("#addtaskbn").hide();
+					document.location = "#two";
+				}
+			});
+		}
+	</script>
+	<div class="row 150%">
+		<div class="6u 12u$(medium)">
+			<header class="major">
+				<h2>Lista Zadań</h2>
+				<h5><button onClick="javascript:addTask();" id="addtaskbn">Dodaj zadanie</button></h5>
+			</header>
+			<div id="taskshere">
+				Musisz wybrać kategorię na liście <a href="#one" class="scrolly">wyżej</a>.
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block sectionThree %}{% if app.user and is_granted('ROLE_ADMIN') %}
 		<script>
 			function editUser(userid)
 			{
@@ -225,7 +321,7 @@
 <script>
 	$(function()
 	{
-		$( "#addCategoryDialog" ).dialog({
+		$("#addCategoryDialog").dialog({
 			autoOpen: false,
 			show: {
 				effect: "blind",
@@ -236,6 +332,19 @@
 				duration: 1000
 			}
 		});
+		$("#showtaskwnd").dialog({
+			autoOpen: false,
+			minWidth: 400,
+			show: {
+				effect: "blind",
+				duration: 1000
+			},
+			hide: {
+				effect: "blind",
+				duration: 1000
+			}
+		});
+		$("#addtaskbn").hide();
 	});
 </script>
 {% endblock %}
