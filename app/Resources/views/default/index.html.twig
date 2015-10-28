@@ -120,12 +120,51 @@
 		Opis zadania: <textarea id="showtaskwnd_descr" class="ignorecss" disabled="disabled"></textarea>
 		Data zakończenia: <span style="font-weight:bold;" id="showtaskwnd_endtime" class="ignorecss"></span></span><br />
 		Priorytet: <span style="font-weight:bold;" id="showtaskwnd_priority" class="ignorecss"></span><br />
-		Zakończone: <span class="ignorecss" style="font-weight:bold;" id="showtaskwnd_ended">tak</span><br />
+		Zakończone: <span class="ignorecss" style="font-weight:bold;" id="showtaskwnd_ended">tak</span> <a href="javascript:setEnded();" id="showtaskwnd_end"><small>(Zakończono)</small></a><br />
+		{% if is_granted('ROLE_ADMIN') %}
+			<button onClick="removeTask();">Usuń zadanie</button>
+		{% endif %}
+	</div>
+	<div id="addtaskwnd" title="Utwórz zadanie" class="ignorecss">
+		<form onSubmit="return addTask();">
+			<label for="addtaskwnd_name">Nazwa zadania</label><input type="text" name="addtaskwnd_name" id="addtaskwnd_name" required="required" />
+			<label for="addtaskwnd_descr">Opis zadania</label><textarea name="addtaskwnd_descr" id="addtaskwnd_descr" required="required"></textarea>
+			<label for="addtaskwnd_endtime">Data zakończenia</label><input type="text" name="addtaskwnd_endtime" id="addtaskwnd_endtime" required="required" />
+			<label for="addtaskwnd_prior">Priorytet</label><select name="addtaskwnd_prior" id="addtaskwnd_prior">
+				<option value="1">Niski</option>
+				<option value="2" selected="selected">Normalny</option>
+				<option value="3">Wysoki</option>
+				<option value="4">Na wczoraj</option>
+			</select>
+			<input type="submit" class="ignorecss" style="margin-top: 10px;" value="Utwórz" />
+		</form>
 	</div>
 	<script>
 		var currCategory = -1;
 		var currPage = 1;
 		var currTasks = [];
+		var currTask = -1;
+		
+		{% if is_granted('ROLE_ADMIN') %}
+			function removeTask()
+			{
+				$.ajax({
+					type: "POST",
+					url: "/remtask/"+currTask,
+					success: function(r) {
+						if(r == "OK")
+							alert("Zadanie zostało usunięte.");
+						else
+							alert("Nie można odnaleźć wybranego zadania.");
+					},
+					error: function(err) {
+						alert("Wystąpił nieznany błąd.");
+					}
+				}).always(function() {
+					$("#showtaskwnd").dialog("close");
+				});
+			}
+		{% endif %}
 		
 		function getDateFromString(str)
 		{
@@ -134,15 +173,91 @@
 			return res[2] + '.' + res[1] + '.' + res[0];
 		}
 		
+		function addTaskWindow()
+		{
+			if(currCategory == -1) {
+				alert("Musisz wybrać kategorię!");
+				return;
+			}
+			
+			$("#addtaskwnd").dialog("open");
+			
+			$("#addtaskwnd_prior").val('2');
+			$("#addtaskwnd_name").val("");
+			$("#addtaskwnd_descr").val("");
+			$("#addtaskwnd_endtime").val("");
+		}
+		
+		function addTask()
+		{
+			$.ajax({
+				type: "POST",
+				url: "{{ absolute_url(path('user_addtask')) }}",
+				data: {
+					categoryId: currCategory,
+					name: $("#addtaskwnd_name").val(),
+					description: $("#addtaskwnd_descr").val(),
+					endtime: $("#addtaskwnd_endtime").val(),
+					priority: $("#addtaskwnd_prior").val()
+				},
+				success: function(r) {
+					if(r == "OK") {
+						alert("Zadanie dodane poprawnie.\nAby je wyświetlić odśwież listę zadań.");
+					} else {
+						alert("Nie znaleziono wybranej kategorii.");
+						alert(r);
+					}
+					$("#addtaskwnd").dialog("close");
+				},
+				error: function(err) {
+					alert("Wystąpił nieznany błąd.");
+					$("#addtaskwnd").dialog("close");
+				}
+			});
+			return false;
+		}
+		
+		function setEnded()
+		{
+			$.ajax({
+				type: "POST",
+				url: "/endtask/"+currTask,
+				success: function(r) {
+					if(r == "NOT_FOUND") {
+						alert("Nie można znaleźć zadania.\nCzyżby zostało usunięte?");
+					} else if(r == "OK") {
+						$("#showtaskwnd_ended").html("tak");
+						$("#showtaskwnd_end").hide();
+						for(var i = 0; i < currTasks.length; i++) {
+							if(currTasks[i].id == currTask) {
+								currTasks[i].ended = true;
+							}
+						}
+					} else {
+						alert(r);	// niewiadomo co
+					}
+				},
+				error: function(err) {
+					alert("Wystąpił nieznany błąd.");
+				}
+			});
+		}
+		
 		function showTask(id)
 		{
 			$("#showtaskwnd").dialog("open");
 			var task = currTasks[id];
+			currTask = task.id;
 			$("#showtaskwnd_name").html(task.name)
 			$("#showtaskwnd_descr").html(task.description);
 			$("#showtaskwnd_endtime").html(getDateFromString(task.endtime.date));
 			$("#showtaskwnd_ended").html(task.ended ? "tak" : "nie");
 			$("#showtaskwnd_priority").html(task.priority);
+			if(task.ended) {
+				$("#showtaskwnd_end").hide();
+			} else {
+				$("#showtaskwnd_end").show();
+			}
 		}
 		
 		function showTasks(id)
@@ -151,8 +266,7 @@
 				type: "POST",
 				url: "/gettasks/" + id + "/1/name/ASC",
 				success: function(r) {
-					if(r.pages < 1)
-					{
+					if(r.pages < 1) {
 						//alert("Nie ma żadnych zadań w wybranej kategorii.");
 						$("#addtaskbn").show();
 						currPage = 1;
@@ -161,9 +275,7 @@
 						$('html,body').animate({
 						  scrollTop: $("#two").offset().top
 						}, 1000);
-					}
-					else
-					{
+					} else {
 						//alert("Printing...");
 						$("#addtaskbn").show();
 						currPage = 1;
@@ -172,8 +284,7 @@
 						
 						var t = $("<table></table>");
 						t.html('<tr><th>ID</th><th>Nazwa</th><th>Data zakończenia</th><th>Priorytet</th><th>Szczegóły</th></tr>');
-						for(var i = 0; i < r.data.length; i++)
-						{
+						for(var i = 0; i < r.data.length; i++) {
 							var tr = $("<tr></tr>");
 							tr.html('<td>' + r.data[i].id + '</td><td>' + r.data[i].name + '</td><td>' + getDateFromString(r.data[i].endtime.date) + '</td><td>' + r.data[i].priority + '</td><td><a href="javascript:showTask('+i+');">Zobacz</a></td>');
 							currTasks[i] = r.data[i];
@@ -202,7 +313,7 @@
 		<div class="6u 12u$(medium)">
 			<header class="major">
 				<h2>Lista Zadań</h2>
-				<h5><button onClick="javascript:addTask();" id="addtaskbn">Dodaj zadanie</button></h5>
+				<h5><button onClick="javascript:addTaskWindow();" id="addtaskbn">Dodaj zadanie</button></h5>
 			</header>
 			<div id="taskshere">
 				Musisz wybrać kategorię na liście <a href="#one" class="scrolly">wyżej</a>.
@@ -213,7 +324,7 @@
 
 {% block sectionThree %}{% if app.user and is_granted('ROLE_ADMIN') %}
 		<script>
-			function editUser(userid)
+			function editUser(userid) 
 			{
 				$("#loading_admin").show();
 				$.ajax("/getuser/" + userid).done(function(r) {
@@ -231,17 +342,16 @@
 			
 			function onSubmit()
 			{
-				if($("#uid").val() == "")
-				{
+				if($("#uid").val() == "") {
 					alert("Musisz wybrać użytkownika, którego chcesz zaktualizować...");
 					return false;
 				}
-				if(confirm("Czy na pewno chcesz zaktualizować tego użytkownika?"))
-				{
+				
+				if(confirm("Czy na pewno chcesz zaktualizować tego użytkownika?")) {
 					$("#loading_admin").show();
 					$.ajax({
 						type: "POST",
-						url: "{{ path('admin_setuser') }}",
+						url: "{{ absolute_url(path('admin_setuser')) }}",
 						data: {
 							id: parseInt($("#uid").val()),
 							first: $("#ufirst").val(),
@@ -252,8 +362,9 @@
 							access: $("#uaccess").prop("checked") ? 1 : 0
 						},
 						success: function(r) {
-							if(r != "OK")
+							if(r != "OK") {
 								alert(r);
+							}
 						},
 						error: function(err) {
 							alert("Nie można zaktualizować danych użytkownika.");
@@ -332,6 +443,17 @@
 				duration: 1000
 			}
 		});
+		$("#addtaskwnd").dialog({
+			autoOpen: false,
+			show: {
+				effect: "blind",
+				duration: 1000
+			},
+			hide: {
+				effect: "blind",
+				duration: 1000
+			}
+		});
 		$("#showtaskwnd").dialog({
 			autoOpen: false,
 			minWidth: 400,
@@ -345,6 +467,7 @@
 			}
 		});
 		$("#addtaskbn").hide();
+		$("#addtaskwnd_endtime").datepicker({ minDate: 0, dateFormat: "yy-mm-dd"});
 	});
 </script>
 {% endblock %}

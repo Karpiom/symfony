@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -19,16 +20,19 @@ class Task
 	
 	/**
 	 * @ORM\Column(type="string", length=50)
+     * @Assert\NotBlank()
 	 */
 	protected $name;
 	
 	/**
 	 * @ORM\Column(type="text")
+     * @Assert\NotBlank()
 	 */
 	protected $description;
 
 	/**
 	 * @ORM\Column(type="datetime")
+     * @Assert\NotBlank()
 	 */
 	protected $endTime;
 	
@@ -39,18 +43,17 @@ class Task
 	
 	/**
 	 * @ORM\Column(type="smallint", options={"default":0})
+     * @Assert\NotBlank()
 	 */
 	protected $priority;
 	
 	/**
      * @ORM\ManyToOne(targetEntity="Category", inversedBy="tasksList")
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
+     * @Assert\NotBlank()
      */
     protected $category;
-	
-	/**
-	 * @ORM\ManyToOne(targetEntity="")
-
+    
     /**
      * Get id
      *
@@ -112,11 +115,11 @@ class Task
     /**
      * Set endTime
      *
-     * @param \datatime $endTime
+     * @param \datetime $endTime
      *
      * @return Task
      */
-    public function setEndTime(\datatime $endTime)
+    public function setEndTime(\DateTime $endTime)
     {
         $this->endTime = $endTime;
 

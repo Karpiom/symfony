@@ -11,12 +11,12 @@ class RegisterForm extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-			->add('firstName', 'text', array(
-				'label' => 'Imię'
-			))
-			->add('lastName', 'text', array(
-				'label' => 'Nazwisko'
-			))
+            ->add('firstName', 'text', array(
+                'label' => 'Imię'
+            ))
+            ->add('lastName', 'text', array(
+                'label' => 'Nazwisko'
+            ))
             ->add('email', 'email')
             ->add('plainPassword', 'repeated', array(
                 'type' => 'password',

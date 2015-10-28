@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block header %}
+	<h1>Witaj <strong>nieznajomy</strong>!</h1>
+	Aby korzystać z serwisu musisz się zalogować.
+	<ul class="actions">
+		<li><a href="/login#one" class="button scrolly">Zaloguj się</a></li>
+		<li><a href="/login#two" class="button scrolly">Zarejestruj się</a></li>
+	</ul>
+{% endblock %}
+
+{% block sectionOne %}
+<script>
+	function sendNewPassword()
+	{
+		$.ajax({
+			type: "POST",
+			url: "{{ absolute_url(path('recovery_account_post')) }}",
+			data: {
+				user_mail: $("#email").val()
+			},
+			success: function(r) {
+				if(r != "OK") {
+					$("#error").html(r);
+				} else {
+					$("#recbox").html("Na podany adres email zostało wysłane nowe hasło.");
+				}
+			},
+			error: function(err) {
+				alert("Wystąpił błąd wewnętrzny serwera.\nProszę spróbować później.");
+				$("#error").html("Wystąpił błąd wewnętrzny serwera.\nProszę spróbować później.");
+				window.open(err.responseText);
+			}
+		});	
+		
+		return false;
+	}
+</script>
+<div class="row 150%">
+	<div class="6u 12u$(medium)">
+		<header class="major">Zapomniałem(am) hasło</header>
+		<div id="recbox">
+			W celu przypomnienia hasła musisz podać swój adres email:
+			<p style="color: red;" id="error"></p>
+			<form onSubmit="return sendNewPassword();">
+				<input type="email" name="email" id="email" required="required" />
+				<input type="submit" value="Przypomnij" style="margin-top: 10px;" />
+			</form>
+		</div>
+	</div>
+</div>	
+{% endblock %}
+
+{% block bodyEnd %}
+<script>
+	$(document).ready(function() {
+		$('html,body').animate({
+			scrollTop: $("#one").offset().top
+		}, 1000);
+	});
+</script>
+{% endblock %}

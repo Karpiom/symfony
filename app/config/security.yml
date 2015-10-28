@@ -36,6 +36,8 @@ security:
         - { path: ^/js/*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/css/*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/loggedout, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/recacc, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/recacc_post, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/getuser, roles: ROLE_ADMIN }
         - { path: ^/setuser, roles: ROLE_ADMIN }

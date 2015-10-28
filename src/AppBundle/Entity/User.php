@@ -20,7 +20,7 @@ class User implements AdvancedUserInterface, \Serializable
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-	
+    
     /**
      * @ORM\Column(type="string", length=25)
      * @Assert\NotBlank()
@@ -40,31 +40,31 @@ class User implements AdvancedUserInterface, \Serializable
      */
     protected $email;
 
-	/**
+    /**
      * @Assert\NotBlank()
      * @Assert\Length(max = 4096)
-	 */
-	protected $plainPassword; 
-	
+     */
+    protected $plainPassword; 
+    
     /**
      * @ORM\Column(type="string", length=64)
      */
     protected $password;
-	
-	/**
+    
+    /**
      * @ORM\Column(name="is_active", type="boolean", options={"default:true"})
      */
     private $isActive;
-	
-	/**
+    
+    /**
      * @ORM\Column(type="boolean", options={"default":false})
      */
     private $access;
-	
-	public function __construct()
+    
+    public function __construct()
     {
         $this->isActive = true;
-		$this->access = false;
+        $this->access = false;
     }
 
     /**
@@ -173,39 +173,40 @@ class User implements AdvancedUserInterface, \Serializable
         return $this->password;
     }
 
-	/**
+    /**
      * Get roles
      *
      * @return array
      */
-	public function getRoles()
+    public function getRoles()
     {
-		if(!$this->access)
-			return array('ROLE_USER');
-		else
-			return array('ROLE_ADMIN', 'ROLE_USER');
+        if(!$this->access) {
+            return array('ROLE_USER');
+        } else {
+            return array('ROLE_ADMIN', 'ROLE_USER');
+        }
     }
-	
-	public function hasRole($role)
-	{
-		return in_array($role, self::getRoles());
-	}
-	
-	public function eraseCredentials()
+    
+    public function hasRole($role)
+    {
+        return in_array($role, self::getRoles());
+    }
+    
+    public function eraseCredentials()
     {
     }
-	
-	/**
+    
+    /**
      * Get username
      *
      * @return string
      */
-	public function getUsername()
+    public function getUsername()
     {
         return $this->email;
     }
 
-	/**
+    /**
      * Get salt
      *
      * @return string
@@ -214,8 +215,8 @@ class User implements AdvancedUserInterface, \Serializable
     {
         return null;
     }
-	
-	/** @see \Serializable::serialize() */
+    
+    /** @see \Serializable::serialize() */
     public function serialize()
     {
         return serialize(array(
@@ -284,32 +285,32 @@ class User implements AdvancedUserInterface, \Serializable
     {
         return $this->access;
     }
-	
+    
     /**
      * Get plainPassword
      *
      * @return string
      */
-	public function getPlainPassword()
-	{
-		return $this->plainPassword;
-	}
-	
-	/**
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+    
+    /**
      * Set plainPassword
      *
      * @param string $newPassword
      *
      * @return User
      */
-	public function setPlainPassword($pass)
-	{
-		$this->plainPassword = $pass;
-		
-		return $this;
-	}
-	
-	public function isAccountNonExpired()
+    public function setPlainPassword($pass)
+    {
+        $this->plainPassword = $pass;
+        
+        return $this;
+    }
+    
+    public function isAccountNonExpired()
     {
         return true;
     }
@@ -324,6 +325,11 @@ class User implements AdvancedUserInterface, \Serializable
         return true;
     }
 
+    /**
+     * Is account enabled
+     *
+     * @return boolean
+     */
     public function isEnabled()
     {
         return $this->isActive;
