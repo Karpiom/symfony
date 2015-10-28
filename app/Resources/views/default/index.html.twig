@@ -144,6 +144,8 @@
 		var currPage = 1;
 		var currTasks = [];
 		var currTask = -1;
+		var currSort = "name";
+		var currSortType = "ASC";
 		
 		{% if is_granted('ROLE_ADMIN') %}
 			function removeTask()
@@ -252,7 +254,7 @@
 			$("#showtaskwnd_descr").html(task.description);
 			$("#showtaskwnd_endtime").html(getDateFromString(task.endtime.date));
 			$("#showtaskwnd_ended").html(task.ended ? "tak" : "nie");
-			$("#showtaskwnd_priority").html(task.priority);
+			$("#showtaskwnd_priority").html(getPriorityText(task.priority));
 			if(task.ended) {
 				$("#showtaskwnd_end").hide();
 			} else {
@@ -260,11 +262,35 @@
 			}
 		}
 		
-		function showTasks(id)
+		function getPriorityText(prior)
+		{
+			if(prior == 1) {
+				return "Niski";
+			} else if(prior == 2) {
+				return "Normalny";
+			} else if(prior == 3) {
+				return "Wysoki";
+			} else if(prior == 4) {
+				return "Na wczoraj";
+			}
+			return "Nieznany";
+		}
+		
+		function showTasks(id)	// helper
+		{
+			_showTasks(id, 1, currSort, currSortType);
+		}
+		
+		function setPage(page)
+		{
+			_showTasks(currCategory, page, currSort, currSortType);
+		}
+		
+		function _showTasks(id, page, sortBy, sortType)
 		{
 			$.ajax({
 				type: "POST",
-				url: "/gettasks/" + id + "/1/name/ASC",
+				url: "/gettasks/" + id + "/" + page + "/" + sortBy + "/" + sortType,
 				success: function(r) {
 					if(r.pages < 1) {
 						//alert("Nie ma żadnych zadań w wybranej kategorii.");
@@ -278,7 +304,7 @@
 					} else {
 						//alert("Printing...");
 						$("#addtaskbn").show();
-						currPage = 1;
+						currPage = page;
 						currCategory = id;
 						currTasks = [];
 						
@@ -286,8 +312,31 @@
 						t.html('<tr><th>ID</th><th>Nazwa</th><th>Data zakończenia</th><th>Priorytet</th><th>Szczegóły</th></tr>');
 						for(var i = 0; i < r.data.length; i++) {
 							var tr = $("<tr></tr>");
-							tr.html('<td>' + r.data[i].id + '</td><td>' + r.data[i].name + '</td><td>' + getDateFromString(r.data[i].endtime.date) + '</td><td>' + r.data[i].priority + '</td><td><a href="javascript:showTask('+i+');">Zobacz</a></td>');
+							tr.html('<td>' + r.data[i].id + '</td><td>' + r.data[i].name + '</td><td>' + getDateFromString(r.data[i].endtime.date) + '</td><td>' + getPriorityText(r.data[i].priority) + '</td><td><a href="javascript:showTask('+i+');">Zobacz</a></td>');
 							currTasks[i] = r.data[i];
+							t.append(tr);
+						}
+						
+						if(r.pages > 1) {
+							var tr = $("<tr></tr>");
+							var td = $("<td></td>");
+							td.attr("colspan", 5).attr("align", "center").html("Pages: ");
+							for(var i = 1; i <= r.pages; i++) {
+								var span = $("<span></span>");
+								span.css("margin-left", "3px");
+								if(i == currPage) {
+									var strong = $("<b></b>");
+									strong.html(i);
+									span.append(strong);
+								} else {
+									var a = $("<a></a>");
+									a.prop("href", "javascript:setPage("+ i + ");");
+									a.html(i);
+									span.append(a);
+								}
+								td.append(span);
+							}
+							tr.append(td);
 							t.append(tr);
 						}
 						

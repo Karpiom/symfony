@@ -62,7 +62,7 @@ class CategoryController extends Controller
      * @Route("/gettasks/{id}/{page}/{orderBy}/{AscDesc}", name="user_gettasks")
      */
     public function onGetTasks($id, $page, $orderBy, $AscDesc)
-    {
+    {        
         $em = $this->getDoctrine()->getManager();
         $ret = array(
             "pages" => -1,
@@ -79,7 +79,7 @@ class CategoryController extends Controller
         if(!$count)
             return new JsonResponse($ret);    // error
         
-        $ret["pages"] = (int)($count / 20 + 1);
+        $ret["pages"] = (int)($count / 10 + 1);
         
         if($AscDesc != "DESC")
             $AscDesc = "ASC";
@@ -107,8 +107,8 @@ class CategoryController extends Controller
         $qb = $repTasks->createQueryBuilder("t");
         $qb->where("t.category = :id")->setParameter("id", (int)$id);
         $qb->orderBy($orderBy, $AscDesc);
-        $qb->setMaxResults(20);
-        $qb->setFirstResult(((int)$page - 1) * 20);
+        $qb->setMaxResults(10);
+        $qb->setFirstResult(((int)$page - 1) * 10);
         
         $tasks = $qb->getQuery()->getResult();
         if(!$tasks || !count($tasks))
