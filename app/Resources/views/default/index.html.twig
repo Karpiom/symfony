@@ -286,6 +286,13 @@
 			_showTasks(currCategory, page, currSort, currSortType);
 		}
 		
+		function sortBy(name, type)
+		{
+			_showTasks(currCategory, currPage, name, type);
+			currSort = name;
+			currSortType = type;
+		}
+		
 		function _showTasks(id, page, sortBy, sortType)
 		{
 			$.ajax({
@@ -309,7 +316,7 @@
 						currTasks = [];
 						
 						var t = $("<table></table>");
-						t.html('<tr><th>ID</th><th>Nazwa</th><th>Data zakończenia</th><th>Priorytet</th><th>Szczegóły</th></tr>');
+						t.html('<tr><th>ID <a href="javascript:sortBy(\'id\', \'ASC\');">&#8643;</a><a href="javascript:sortBy(\'id\', \'DESC\');">&#8638;</a></th><th>Nazwa <a href="javascript:sortBy(\'name\', \'ASC\');">&#8643;</a><a href="javascript:sortBy(\'name\', \'DESC\');">&#8638;</a></th><th>Data zakończenia <a href="javascript:sortBy(\'end\', \'ASC\');">&#8643;</a><a href="javascript:sortBy(\'end\', \'DESC\');">&#8638;</a></th><th>Priorytet <a href="javascript:sortBy(\'priority\', \'ASC\');">&#8643;</a><a href="javascript:sortBy(\'priority\', \'DESC\');">&#8638;</a></th><th>Szczegóły</th></tr>');
 						for(var i = 0; i < r.data.length; i++) {
 							var tr = $("<tr></tr>");
 							tr.html('<td>' + r.data[i].id + '</td><td>' + r.data[i].name + '</td><td>' + getDateFromString(r.data[i].endtime.date) + '</td><td>' + getPriorityText(r.data[i].priority) + '</td><td><a href="javascript:showTask('+i+');">Zobacz</a></td>');
@@ -359,7 +366,7 @@
 		}
 	</script>
 	<div class="row 150%">
-		<div class="6u 12u$(medium)">
+		<div class="12u$(medium)">
 			<header class="major">
 				<h2>Lista Zadań</h2>
 				<h5><button onClick="javascript:addTaskWindow();" id="addtaskbn">Dodaj zadanie</button></h5>
