@@ -1,0 +1,120 @@
+{% extends 'base.html.twig' %}
+
+{% block header %}
+	<h1>Witaj <strong>{{ user_FN }} {{ user_LN }}</strong>!</h1>
+	
+	<ul class="actions">
+	{% if app.user and is_granted('ROLE_ADMIN') %}
+		<li><a href="{{ path('homepage') }}#three" class="button scrolly">Opcje administratora</a></li>
+	{% endif %}
+		<li><a href="{{ path('homepage') }}#one" class="button scrolly">Lista zadań</a></li>
+		<li><a href="{{ path('dashboard') }}" class="button scrolly">Dashboard</a></li>
+		<li><a href="{{ path('logout') }}" class="button scrolly">Wyloguj się</a></li>
+	</ul>
+{% endblock %}
+
+{% block bodyEnd %}
+
+{% endblock %}
+
+{% block sectionOne %}
+	<div class="row 150%">
+		<div class="6u 12u$(medium)">
+			<header class="major">
+				<h2>Lista zadań na najbliższy tydzień</h2>
+			</header>
+				<table>
+					<tr>
+						<th>ID</th>
+						<th>Nazwa</th>
+						<th>Data zakończenia</th>
+						<th>Priorytet</th>
+					</tr>
+					{% if priorityTasks is empty %}
+					<tr>
+						<td colspan="4" align="center">W ciągu najbliższego tygodnia nie kończą się żadne zadania.</td>
+					</tr>
+					{% else %}
+						{% for task in priorityTasks %}
+						<tr>
+							<td>{{ task.id }}</td>
+							<td>{{ task.name }}</td>
+							<td>{{ task.endTime.format('d.m.Y') }}</td>
+							<td>
+							{% if task.priority == 1 %}
+								Niski
+							{% elseif task.priority == 2 %}
+								Normalny
+							{% elseif task.priority == 3 %}
+								Wysoki
+							{% elseif task.priority == 4 %}
+								Na wczoraj
+							{% endif %}
+							</td>
+						</tr>
+						{% endfor %}
+					{% endif %}
+				</table>
+		</div>
+	</div>
+{% endblock %}
+
+{% block sectionTwo %}
+	<div class="row 150%">
+		<div class="6u 12u$(medium)">
+			<header class="major">
+				<h2>Lista zaległych zadań</h2>
+			</header>
+			<table>
+					<tr>
+						<th>ID</th>
+						<th>Nazwa</th>
+						<th>Data zakończenia</th>
+						<th>Priorytet</th>
+					</tr>
+					{% if lastTasks is empty %}
+					<tr>
+						<td colspan="4" align="center">Brak zaległych zadań.</td>
+					</tr>
+					{% else %}
+						{% for task in lastTasks %}
+						<tr>
+							<td>{{ task.id }}</td>
+							<td>{{ task.name }}</td>
+							<td>{{ task.endTime.format('d.m.Y') }}</td>
+							<td>
+							{% if task.priority == 1 %}
+								Niski
+							{% elseif task.priority == 2 %}
+								Normalny
+							{% elseif task.priority == 3 %}
+								Wysoki
+							{% elseif task.priority == 4 %}
+								Na wczoraj
+							{% endif %}
+							</td>
+						</tr>
+						{% endfor %}
+					{% endif %}
+				</table>
+		</div>
+	</div>
+{% endblock %}
+
+{% block headScript %}
+	<script>
+		function getPriorityText(prior)
+		{
+			if(prior == 1) {
+				return "Niski";
+			} else if(prior == 2) {
+				return "Normalny";
+			} else if(prior == 3) {
+				return "Wysoki";
+			} else if(prior == 4) {
+				return "Na wczoraj";
+			}
+			return "Nieznany";
+		}
+	</script>
+{% endblock %}

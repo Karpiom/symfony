@@ -43,4 +43,39 @@ class DefaultController extends Controller
                 
         ));
     }
+    
+    /**
+     * @Route("/dashboard", name="dashboard")
+     */
+    public function dashboard()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
+        $nextWeek = new \DateTime("+7 days");
+        $today = new \DateTime("today");
+        
+        $repTasks = $em->getRepository("AppBundle:Task");
+        $qb = $repTasks->createQueryBuilder("t");
+        $qb->where("t.endTime < :dt AND t.ended = 0")->setParameter("dt", $nextWeek);
+        $qb->orderBy("t.endTime", "ASC");
+        
+        $priorityTasks = $qb->getQuery()->getResult();
+        
+        $repTasks = $em->getRepository("AppBundle:Task");
+        $qb = $repTasks->createQueryBuilder("t");
+        $qb->where("t.endTime < :dt AND t.ended = 0")->setParameter("dt", $today);
+        $qb->orderBy("t.endTime", "DESC");
+        
+        $lastTasks = $qb->getQuery()->getResult();
+        
+        return $this->render('default/dashboard.html.twig',
+            array(
+                'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..'),
+                'user_FN' => $user->getFirstName(),
+                'user_LN' => $user->getLastName(),
+                'priorityTasks' => $priorityTasks,
+                'lastTasks' => $lastTasks
+            )
+        );
+    }
 }
